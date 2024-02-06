@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 
 	//"log"
 	"time"
@@ -13,11 +14,13 @@ import (
 	"github.com/google/uuid"
 )
 
-func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
+func (apiCfg *apiConfig) handlerCreateUsers(w http.ResponseWriter, r *http.Request) {
 
 	type parameters struct {
 		Name string `json:"name"`
 	}
+
+	log.Printf("Body: %v", r.Body)
 	decoder := json.NewDecoder(r.Body)
 	params := parameters{}
 
@@ -36,5 +39,9 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 		respondWithError(w, 400, fmt.Sprintf("Could'nt create user: %v", err))
 		return
 	}
-	repondWithJSON(w, 200, user)
+	repondWithJSON(w, 200, databaseUserToUser(user))
+}
+
+func (apiCfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) {
+
 }
