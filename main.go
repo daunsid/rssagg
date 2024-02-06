@@ -44,7 +44,7 @@ func main() {
 		log.Fatal("Can't connect to db: ", err)
 	}
 
-	apiCfg := apiConfig{
+	apisCfg := &apiConfig{
 		DB: queries,
 	}
 
@@ -62,11 +62,11 @@ func main() {
 
 	v1Router.Get("/healthz", handlerReadiness)
 	v1Router.Get("/err", handlerErr)
-	v1Router.Post("/users", apiCfg.handlerCreateUser)
+	v1Router.Post("/users", apisCfg.handlerCreateUsers)
 	router.Mount("/v1", v1Router)
 	//router.HandleFunc("/ready", HandlerReadiness)
 
-	srv := http.Server{
+	srv := &http.Server{
 		Handler: router,
 		Addr:    ":" + portString,
 	}
